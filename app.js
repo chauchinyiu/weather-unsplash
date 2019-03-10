@@ -6,6 +6,7 @@ const weatherUrl = "https://api.openweathermap.org/data/2.5/weather?appid=b50a8e
 const imageUrl = "https://api.unsplash.com/search/photos?page=1&client_id=284ab250f4d0cd5fe2d1538ffa5d30a58d76e96fadfc90362d0a7aeb3191ef20";
 
 app.get("/weather/:city/photo/(:size)?", (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     const city = req.params.city
     const size = req.params.size?req.params.size:"regular"
     console.log(size)
@@ -14,24 +15,15 @@ app.get("/weather/:city/photo/(:size)?", (req, res, next) => {
 
     const promise1 = new Promise(function(resolve, reject) {
         weatherRequest(weatherCityUrl, (json)=>{
-  
-             let weatherShortDescription = json.weather[0].main;
-             let weatherLongDescription = json.weather[0].description;
-             let temp = json.main.temp;
-             let temp_max = json.main.temp_max;
-             let temp_min = json.main.temp_min;
-             let humidity = json.main.humidity;
-             let pressure = json.main.pressure;
-     
-             let weatherInstance ={temp: temp,
-                 temp_max :temp_max,
-                 temp_min:temp_min,
-                 humidity: humidity,
-                 pressure: pressure,
-                 weatherShortDescription: weatherShortDescription,
-                 weatherLongDescription: weatherLongDescription}
+ 
+             let weatherInstance ={temp: json.main.temp,
+                 temp_max :json.main.temp_max,
+                 temp_min:json.main.temp_min,
+                 humidity: json.main.humidity,
+                 pressure: json.main.pressure,
+                 weatherShortDescription: json.weather[0].main,
+                 weatherLongDescription: json.weather[0].description}
              resolve(weatherInstance);
-             //parse json
          }).catch(function(error) {
             reject(error);
           }); 
