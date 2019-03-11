@@ -5,13 +5,24 @@ var app = express();
 const weatherUrl = "https://api.openweathermap.org/data/2.5/weather?appid=b50a8ebaff3e45413c6fe674489f5541&units=metric";
 const imageUrl = "https://api.unsplash.com/search/photos?page=1&client_id=284ab250f4d0cd5fe2d1538ffa5d30a58d76e96fadfc90362d0a7aeb3191ef20";
 
-app.get("/weather/:city/photo/(:size)?", (req, res, next) => {
+app.get("/", (req, res, next) => {
+    let city = req.query.city;
+    let size = req.query.size?req.query.size:"regular";
+    let numberOfImages = req.query.numberOfImages;
+    let orientation = req.query.orientation;
+
     res.setHeader('Access-Control-Allow-Origin', '*');
-    const city = req.params.city
-    const size = req.params.size?req.params.size:"regular"
-    console.log(size)
     const weatherCityUrl = weatherUrl + "&q="+ city
-    const imageCityUrl = imageUrl+ "&query="+ city
+    var imageCityUrl = imageUrl+ "&query="+ city  
+    
+    if(numberOfImages){
+        imageCityUrl = imageCityUrl + "&per_page="+numberOfImages
+    }
+    
+    if(orientation){
+        imageCityUrl = imageCityUrl + "&orientation="+orientation
+    }
+     
 
     const promise1 = new Promise(function(resolve, reject) {
         weatherRequest(weatherCityUrl, (json)=>{
