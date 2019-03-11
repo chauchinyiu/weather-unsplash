@@ -8,15 +8,15 @@ const imageUrl = "https://api.unsplash.com/search/photos?page=1&client_id=284ab2
 app.get("/", (req, res, next) => {
     let city = req.query.city;
     let size = req.query.size?req.query.size:"regular";
-    let numberOfImages = req.query.numberOfImages;
+    let num_imgs = req.query.num_imgs;
     let orientation = req.query.orientation;
 
     res.setHeader('Access-Control-Allow-Origin', '*');
     const weatherCityUrl = weatherUrl + "&q="+ city
     var imageCityUrl = imageUrl+ "&query="+ city  
     
-    if(numberOfImages){
-        imageCityUrl = imageCityUrl + "&per_page="+numberOfImages
+    if(num_imgs){
+        imageCityUrl = imageCityUrl + "&per_page="+num_imgs
     }
     
     if(orientation){
@@ -66,10 +66,12 @@ app.listen(process.env.PORT || 3000, () => {
 });
 
 const weatherRequest = async function(url, callback) {
+    console.log('weather url',url)
     const weatherJson = await request(url,{json:true});
     callback(weatherJson);
 }
 const imageRequest = async function(url, callback) {
+    console.log('unsplash url',url)
     const imageJson = await request(url,{json:true});
     callback(imageJson);
 }
