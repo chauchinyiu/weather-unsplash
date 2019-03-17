@@ -16,7 +16,7 @@ app.get("/", (req, res, next) => {
     var imageCityUrl = imageUrl+ "&query="+ city  
     
     if(num_imgs){
-        imageCityUrl = imageCityUrl + "&per_page="+num_imgs
+        imageCityUrl = imageCityUrl + "&per_page=150" 
     }
     
     if(orientation){
@@ -46,6 +46,11 @@ app.get("/", (req, res, next) => {
              for(i=0;i<images.length; i++){
                 imagesInstance[i] = {title:images[i].description, url:images[i].urls[size]};          
              }
+            
+             if (num_imgs) {
+                imagesInstance = this.getRandomArrayElements(imagesInstance, num_imgs)
+             }
+             
              resolve({images:imagesInstance});
          }).catch(function(error) {
             reject(error);
@@ -59,7 +64,10 @@ app.get("/", (req, res, next) => {
       });
    });
 
+ 
 
+var numbers = ['1','2','4','5','6','7','8','9','10'];
+alert( getRandomArrayElements(numbers, 4) );
    
 app.listen(process.env.PORT || 3000, () => {
  console.log("Server running on http://localhost:3000");
@@ -74,4 +82,15 @@ const imageRequest = async function(url, callback) {
     console.log('unsplash url',url)
     const imageJson = await request(url,{json:true});
     callback(imageJson);
+}
+
+function getRandomArrayElements(arr, count) {
+    var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
+    while (i-- > min) {
+        index = Math.floor((i + 1) * Math.random());
+        temp = shuffled[index];
+        shuffled[index] = shuffled[i];
+        shuffled[i] = temp;
+    }
+    return shuffled.slice(min);
 }
