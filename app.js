@@ -48,7 +48,7 @@ app.get("/", (req, res, next) => {
              }
             
              if (num_imgs) {
-                imagesInstance = this.getRandomArrayElements(imagesInstance, num_imgs)
+                imagesInstance = getRandomArrayElements(imagesInstance, num_imgs)
              }
              
              resolve({images:imagesInstance});
@@ -57,7 +57,7 @@ app.get("/", (req, res, next) => {
           }); 
       });
 
-
+  
     Promise.all([promise1,promise2]).then(function(values) {
         let result = Object.assign(values[0], values[1]);
         res.json(result);
@@ -80,7 +80,7 @@ const imageRequest = async function(url, callback) {
     callback(imageJson);
 }
 
-function getRandomArrayElements(arr, count) {
+const getRandomArrayElements = function(arr, count) {
     var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
     while (i-- > min) {
         index = Math.floor((i + 1) * Math.random());
