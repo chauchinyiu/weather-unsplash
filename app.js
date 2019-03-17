@@ -64,11 +64,7 @@ app.get("/", (req, res, next) => {
       });
    });
 
- 
-
-var numbers = ['1','2','4','5','6','7','8','9','10'];
-alert( getRandomArrayElements(numbers, 4) );
-   
+  
 app.listen(process.env.PORT || 3000, () => {
  console.log("Server running on http://localhost:3000");
 });
