@@ -32,6 +32,7 @@ app.get("/", (req, res, next) => {
                  temp_min:json.main.temp_min,
                  humidity: json.main.humidity,
                  pressure: json.main.pressure,
+                 iconurl: "http://openweathermap.org/img/w/" + json.weather[0].icon + ".png",
                  weatherShortDescription: json.weather[0].main,
                  weatherLongDescription: json.weather[0].description}
              resolve(weatherInstance);
